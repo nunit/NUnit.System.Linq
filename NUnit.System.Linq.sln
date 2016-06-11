@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnit.System.Linq", "src\NU
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Folder", "Solution Folder", "{20F80256-B69C-4174-BBCC-D47F0014CCF5}"
 	ProjectSection(SolutionItems) = preProject
-		..\nunit-samples\csharp\build.cake = ..\nunit-samples\csharp\build.cake
+		build.cake = build.cake
 	EndProjectSection
 EndProject
 Global

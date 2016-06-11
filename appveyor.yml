@@ -1,0 +1,8 @@
+version: 1.0.{build}
+configuration: Release
+platform: Any CPU
+build:
+  project: NUnit.System.Linq.sln
+  publish_nuget: true
+  verbosity: minimal
+test: off
