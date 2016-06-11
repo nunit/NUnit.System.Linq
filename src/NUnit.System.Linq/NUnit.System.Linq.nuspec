@@ -10,9 +10,9 @@
     <projectUrl>http://nunit.org</projectUrl>
     <iconUrl>http://nunit.org/nuget/nunitv3_32x32.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Partial implementation of System.Linq used internally by NUnit in builds targetting .NET 2.0.</summary>
-    <description></description>
-    <releaseNotes></releaseNotes>
+    <summary>NUnit's System.Linq for use in .NET 2.0 applications.</summary>
+    <description>This is a partial implementation of System.Linq used internally by NUnit in builds targetting .NET 2.0. It makes no attempt at generality - we only added Types and methods that we use ourselves. The code is almost entirely taken from Mono.</description>
+    <releaseNotes>Initial release</releaseNotes>
     <language>en-US</language>
     <tags>nunit test testing tdd framework fluent assert theory plugin addin</tags>
     <copyright>Copyright (c) 2016 Charlie Poole</copyright>
