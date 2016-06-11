@@ -5,6 +5,11 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnit.System.Linq", "src\NUnit.System.Linq\NUnit.System.Linq.csproj", "{D7ED9849-5DDE-4E23-8390-76A80ACDE2F8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Folder", "Solution Folder", "{20F80256-B69C-4174-BBCC-D47F0014CCF5}"
+	ProjectSection(SolutionItems) = preProject
+		..\nunit-samples\csharp\build.cake = ..\nunit-samples\csharp\build.cake
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
