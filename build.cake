@@ -18,8 +18,10 @@ var SOLUTION = PROJECT_DIR + "NUnit.System.Linq.sln";
 // SET PACKAGE VERSION
 //////////////////////////////////////////////////////////////////////
 
-var version = "0.1";
+var version = "0.2";
 var modifier = "";
+var dbgSuffix = configuration == "Debug" ? "-dbg" : "";
+var packageVersion = version + modifier + dbgSuffix;
 
 //////////////////////////////////////////////////////////////////////
 // CLEAN
@@ -38,6 +40,28 @@ Task("Clean")
 Task("InitializeBuild")
     .Does(() =>
     {
+      if (BuildSystem.IsRunningOnAppVeyor)
+      {
+          var tag = AppVeyor.Environment.Repository.Tag;
+
+          if (tag.IsTag)
+          {
+              packageVersion = tag.Name;
+          }
+          else
+          {
+              var buildNumber = AppVeyor.Environment.Build.Number;
+              packageVersion = version + "-CI-" + buildNumber + dbgSuffix;
+              if (AppVeyor.Environment.PullRequest.IsPullRequest)
+                  packageVersion += "-PR-" + AppVeyor.Environment.PullRequest.Number;
+              else if (AppVeyor.Environment.Repository.Branch.StartsWith("release", StringComparison.OrdinalIgnoreCase))
+                  packageVersion += "-PRE-" + buildNumber;
+              else
+                  packageVersion += "-" + AppVeyor.Environment.Repository.Branch;
+          }
+
+          AppVeyor.UpdateBuildVersion(packageVersion);
+      }
     });
 
 //////////////////////////////////////////////////////////////////////
@@ -68,6 +92,24 @@ Task("Build")
     });
 
 //////////////////////////////////////////////////////////////////////
+// PACKAGE
+//////////////////////////////////////////////////////////////////////
+
+Task("Package")
+    .IsDependentOn("Build")
+    .Does(() =>
+    {
+        CreateDirectory(PACKAGE_DIR);
+
+        NuGetPack("nuget/NUnit.System.Linq.nuspec", new NuGetPackSettings()
+        {
+            Version = packageVersion,
+            BasePath = BIN_DIR,
+            OutputDirectory = PACKAGE_DIR
+        });
+    });
+
+//////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
@@ -76,7 +118,8 @@ Task("Rebuild")
     .IsDependentOn("Build");
 
 Task("Appveyor")
-    .IsDependentOn("Build");
+    .IsDependentOn("Build")
+    .IsDependentOn("Package");
 
 Task("Travis")
     .IsDependentOn("Build");

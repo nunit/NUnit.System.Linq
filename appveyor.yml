@@ -1,8 +1,13 @@
 version: 1.0.{build}
 configuration: Release
 platform: Any CPU
-build:
-  project: NUnit.System.Linq.sln
-  publish_nuget: true
-  verbosity: minimal
+
+build_script:
+  - ps: .\build.ps1 -Target "Appveyor"
+
+artifacts:
+  - path: package\*.nupkg
+  - path: package\*.zip
+
+# disable built-in tests.
 test: off

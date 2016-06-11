@@ -3,7 +3,7 @@
   <metadata>
     <id>NUnit.System.Linq</id>
     <title>NUnit System.Linq for .NET 2.0</title>
-    <version>0.1</version>
+    <version>$version$</version>
     <authors>Charlie Poole</authors>
     <owners>Charlie Poole</owners>
     <licenseUrl>http://nunit.org/nuget/nunit3-license.txt</licenseUrl>
@@ -18,7 +18,7 @@
     <copyright>Copyright (c) 2016 Charlie Poole</copyright>
   </metadata>
   <files>
-    <file src="../../LICENSE" />
-    <file src="../../bin/Release/NUnit.System.Linq.dll" target="lib/net20" />
+    <file src="../../LICENSE.txt" />
+    <file src="NUnit.System.Linq.dll" target="lib/net20" />
   </files>
 </package>
