@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NUnit.System.Link</id>
+    <title>NUnit System.Linq for .NET 2.0</title>
+    <version>0.1</version>
+    <authors>Charlie Poole</authors>
+    <owners>Charlie Poole</owners>
+    <licenseUrl>http://nunit.org/nuget/nunit3-license.txt</licenseUrl>
+    <projectUrl>http://nunit.org</projectUrl>
+    <iconUrl>http://nunit.org/nuget/nunitv3_32x32.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Partial implementation of System.Linq used internally by NUnit in builds targetting .NET 2.0.</summary>
+    <description></description>
+    <releaseNotes></releaseNotes>
+    <language>en-US</language>
+    <tags>nunit test testing tdd framework fluent assert theory plugin addin</tags>
+    <copyright>Copyright (c) 2016 Charlie Poole</copyright>
+  </metadata>
+  <files>
+    <file src="LICENSE" />
+    <file src="bin/Release/NUnit.System.Linq.dll" target="lib/net20" />
+  </files>
+</package>
