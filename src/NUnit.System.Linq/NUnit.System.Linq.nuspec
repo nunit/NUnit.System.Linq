@@ -19,6 +19,6 @@
   </metadata>
   <files>
     <file src="../../LICENSE" />
-    <file src="bin/Release/NUnit.System.Linq.dll" target="lib/net20" />
+    <file src="../../bin/Release/NUnit.System.Linq.dll" target="lib/net20" />
   </files>
 </package>
