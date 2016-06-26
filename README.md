@@ -37,13 +37,6 @@ This assembly contains classes in the System.Linq namespace as well as other cla
 
 #### System.Collections
 
-## Releasing
-
-NUnit.System.Linq is released on the NUnit myget feed only: https://www.myget.org/F/nunit/api/v2
-
-A new release is automatically published for all AppVeyor builds of the master branch. This normally takes place after the merging of a PR on GitHub. Such builds are normally pre-releases, using the -CI- suffix and publication takes place automatically.
-
-
  * `HashPrimeNumbers`
 
 #### System.Collections.Generic
@@ -57,3 +50,14 @@ A new release is automatically published for all AppVeyor builds of the master b
 #### System.Runtime.CompilerServices
 
  * `ExtensionAttribute`
+
+## Releasing
+
+NUnit.System.Linq is released on the NUnit myget feed only: https://www.myget.org/F/nunit/api/v2
+
+A new release is automatically published for all AppVeyor builds of the master branch, which may be initialted in two different ways:
+
+1. By merging a PR into master.
+2. By directly pushing an update to master.
+ 
+In either case, if the commit is tagged, the tag will be used as the release version. If it is not tagged, then the current version specified in appveyor.yml will be used, together with a pre-release suffix starting with -CI-.
