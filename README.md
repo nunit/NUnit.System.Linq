@@ -51,13 +51,17 @@ This assembly contains classes in the System.Linq namespace as well as other cla
 
  * `ExtensionAttribute`
 
-## Releasing
+## Updating the Version number
 
-NUnit.System.Linq is released as a nuget package on both our AppVeyor project feed and the NUnit MyGet feed. All branch and PR builds appear on the AppVeyor feed. Only actual builds of master are deployed by AppVeyor to the MyGet feed. Note that builds of master may be initiated either by merging a PR or by pushing directly to master.
+The version must be updated in AssemblyInfo.cs and build.cake.
+
+## Publishing
+
+NUnit.System.Linq is published as a nuget package on both our AppVeyor project feed and the NUnit MyGet feed. All branch and PR builds appear on the AppVeyor feed. Only builds of master are deployed by AppVeyor to the MyGet feed. Note that builds of master may be initiated either by merging a PR or by pushing directly to master.
 
 Builds, including builds of master, may be either tagged or untagged. Tagged builds use the tag itself as the version. Note that you must use the `--tags` option on the `git push` command in order for a local tag to be pushed to GitHub.
 
-### Example Workflows
+### Workflows
 
 #### Normal CI Build
 
@@ -69,24 +73,37 @@ This is the normal workflow for making changes. All the artifacts created use th
 
 3. Merge the PR to master. Master builds and creates artifacts on both the AppVeyor and MyGet feeds.
 
-#### Tagged CI build
+#### Release Build
 
-> NOTE: Don't use this workflow at the moment. It doesn't seem to work reliably.
+There are two approaches using a PR and pushing directly to master.
 
-As above except before pushing tag the commit and use `--tags` option on the push. All artifacts will use the tag you supply as the version number. For example
+##### Using a PR
+
+1. Update the version for the release in AssemblyInfo.cs and build.cake.
+
+2. Commit your work to the local branch.
+
+3. Apply a tag and push to GitHub. Note that two push commands are required.
 
 ```
-git tag 0.5.0
+git tag 0.9.0
+git push
 git push --tags
 ```
 
-This workflow may not be as useful as first appears. It assumes you know in advance that you want a certain tag on the commit you are making once it is merged. This is normally only the case if you are making simple doc changes or just changing the release itself.
+GitHub will build your branch using the supplied version.
+
+4. Create a PR. The PR builds using the supplied version.
+
+5. Merge the PR to master. Master builds and the artifacts are deployed on both AppVeyor and MyGet using the supplied version.
+
+The problem with this workflow is that it assumes you know in advance that you want a certain tag on the commit you are making before it has even been built. This is normally only the case if you are making simple doc changes or just changing the release itself.
 
 #### Push directly to master
 
 This assumes that master is ready for publication using a particular version number. It's the way to go if you already built the last changes needed for the release and merely want to publish it.
 
-1. Pull master to ensure you have the latest changes
+1. Working in your local master branch, do a git pull to get the latest changes.
 
 2. Apply the tag and push as above.
 
