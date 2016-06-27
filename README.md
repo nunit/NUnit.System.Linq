@@ -75,7 +75,7 @@ This is the normal workflow for making changes. All the artifacts created use th
 
 #### Release Build
 
-This assumes that master is ready for publication using a particular version number. If not, merge in branches until it is ready. Then...
+This assumes that master is ready for publication using a particular version number. If not, merge in branches until it is ready. Be sure to update the version in AssemblyInfo.cs and build.cake using the same version with which you will tag the commit.
 
 1. Working in your local master branch, do a git pull to get the latest changes.
 
