@@ -71,6 +71,8 @@ This is the normal workflow for making changes. All the artifacts created use th
 
 #### Tagged CI build
 
+> NOTE: Don't use this workflow at the moment. It doesn't seem to work reliably.
+
 As above except before pushing tag the commit and use `--tags` option on the push. All artifacts will use the tag you supply as the version number. For example
 
 ```
