@@ -75,36 +75,16 @@ This is the normal workflow for making changes. All the artifacts created use th
 
 #### Release Build
 
-There are two approaches using a PR and pushing directly to master.
-
-##### Using a PR
-
-1. Update the version for the release in AssemblyInfo.cs and build.cake.
-
-2. Commit your work to the local branch.
-
-3. Apply a tag and push to GitHub. Note that two push commands are required.
-
-```
-git tag 0.9.0
-git push
-git push --tags
-```
-
-GitHub will build your branch using the supplied version.
-
-4. Create a PR. The PR builds using the supplied version.
-
-5. Merge the PR to master. Master builds and the artifacts are deployed on both AppVeyor and MyGet using the supplied version.
-
-The problem with this workflow is that it assumes you know in advance that you want a certain tag on the commit you are making before it has even been built. This is normally only the case if you are making simple doc changes or just changing the release itself.
-
-#### Push directly to master
-
-This assumes that master is ready for publication using a particular version number. It's the way to go if you already built the last changes needed for the release and merely want to publish it.
+This assumes that master is ready for publication using a particular version number. If not, merge in branches until it is ready. Then...
 
 1. Working in your local master branch, do a git pull to get the latest changes.
 
-2. Apply the tag and push as above.
+2. Apply the tag and push to GitHub. Note that two push commands are required.
+
+   ```
+   git tag 0.9.0
+   git push
+   git push --tags
+   ```
 
 3. Master will build and artifacts will be deployed to both AppVeyor and MyGet using the tag you specified as the version.
