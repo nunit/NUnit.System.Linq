@@ -1,3 +1,5 @@
+#tool "nuget:https://www.nuget.org/api/v2?package=GitVersion.CommandLine&version=3.5.4"
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -49,27 +51,42 @@ Task("NuGet-Package-Restore")
 
 Setup(context =>
 {
-    if (BuildSystem.IsRunningOnAppVeyor)
+    GitVersion gitVersion;
+
+    if (!BuildSystem.IsLocalBuild)
     {
-        var tag = AppVeyor.Environment.Repository.Tag;
+        // TODO: Figure out if and how we can update the build number on Travis. @asbjornu
+        if (BuildSystem.IsRunningOnAppVeyor)
+        {
+            var tag = AppVeyor.Environment.Repository.Tag;
 
-        if (tag.IsTag)
-        {
-            packageVersion = tag.Name;
-        }
-        else
-        {
-            var buildNumber = AppVeyor.Environment.Build.Number;
-            packageVersion = version + "-CI-" + buildNumber + dbgSuffix;
-            if (AppVeyor.Environment.PullRequest.IsPullRequest)
-                packageVersion += "-PR-" + AppVeyor.Environment.PullRequest.Number;
-            else if (AppVeyor.Environment.Repository.Branch.StartsWith("release", StringComparison.OrdinalIgnoreCase))
-                packageVersion += "-PRE-" + buildNumber;
+            if (tag.IsTag)
+            {
+                packageVersion = tag.Name;
+            }
             else
-                packageVersion += "-" + AppVeyor.Environment.Repository.Branch;
-        }
+            {
+                gitVersion = GitVersion(new GitVersionSettings
+                {
+                    UpdateAssemblyInfo = true,
+                    LogFilePath = "console",
+                    OutputType = GitVersionOutput.BuildServer
+                });
 
-        AppVeyor.UpdateBuildVersion(packageVersion);
+                packageVersion = gitVersion.NuGetVersion;
+            }
+
+            AppVeyor.UpdateBuildVersion(packageVersion);
+        }
+    }
+    else
+    {
+        gitVersion = GitVersion(new GitVersionSettings
+        {
+            OutputType = GitVersionOutput.Json
+        });
+
+        packageVersion = gitVersion.NuGetVersion;
     }
 });
 
