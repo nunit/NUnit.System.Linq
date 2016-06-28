@@ -1,5 +1,8 @@
 language: csharp
 solution: NUnit.System.Linq.sln
 sudo: false
+cache:
+  - packages
+  - tools
 script:
   - ./build --verbosity Diagnostic
