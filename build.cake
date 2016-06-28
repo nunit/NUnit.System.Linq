@@ -37,39 +37,48 @@ Task("Clean")
 // RESTORE PACKAGES
 //////////////////////////////////////////////////////////////////////
 
-Task("InitializeBuild")
+Task("NuGet-Package-Restore")
     .Does(() =>
     {
-      if (BuildSystem.IsRunningOnAppVeyor)
-      {
-          var tag = AppVeyor.Environment.Repository.Tag;
-
-          if (tag.IsTag)
-          {
-              packageVersion = tag.Name;
-          }
-          else
-          {
-              var buildNumber = AppVeyor.Environment.Build.Number;
-              packageVersion = version + "-CI-" + buildNumber + dbgSuffix;
-              if (AppVeyor.Environment.PullRequest.IsPullRequest)
-                  packageVersion += "-PR-" + AppVeyor.Environment.PullRequest.Number;
-              else if (AppVeyor.Environment.Repository.Branch.StartsWith("release", StringComparison.OrdinalIgnoreCase))
-                  packageVersion += "-PRE-" + buildNumber;
-              else
-                  packageVersion += "-" + AppVeyor.Environment.Repository.Branch;
-          }
-
-          AppVeyor.UpdateBuildVersion(packageVersion);
-      }
+        NuGetRestore(SOLUTION);
     });
+
+//////////////////////////////////////////////////////////////////////
+// INITIALIZE BUILD
+//////////////////////////////////////////////////////////////////////
+
+Setup(context =>
+{
+    if (BuildSystem.IsRunningOnAppVeyor)
+    {
+        var tag = AppVeyor.Environment.Repository.Tag;
+
+        if (tag.IsTag)
+        {
+            packageVersion = tag.Name;
+        }
+        else
+        {
+            var buildNumber = AppVeyor.Environment.Build.Number;
+            packageVersion = version + "-CI-" + buildNumber + dbgSuffix;
+            if (AppVeyor.Environment.PullRequest.IsPullRequest)
+                packageVersion += "-PR-" + AppVeyor.Environment.PullRequest.Number;
+            else if (AppVeyor.Environment.Repository.Branch.StartsWith("release", StringComparison.OrdinalIgnoreCase))
+                packageVersion += "-PRE-" + buildNumber;
+            else
+                packageVersion += "-" + AppVeyor.Environment.Repository.Branch;
+        }
+
+        AppVeyor.UpdateBuildVersion(packageVersion);
+    }
+});
 
 //////////////////////////////////////////////////////////////////////
 // BUILD
 //////////////////////////////////////////////////////////////////////
 
 Task("Build")
-    .IsDependentOn("InitializeBuild")
+    .IsDependentOn("NuGet-Package-Restore")
     .Does(() =>
     {
         if (IsRunningOnWindows())
@@ -88,7 +97,7 @@ Task("Build")
                 .WithTarget("Build")
                 .WithProperty("Configuration", configuration)
                 .SetVerbosity(Verbosity.Minimal));
-	    }
+        }
     });
 
 //////////////////////////////////////////////////////////////////////
@@ -125,7 +134,7 @@ Task("Travis")
     .IsDependentOn("Build");
 
 Task("Default")
-	.IsDependentOn("Build");
+    .IsDependentOn("Build");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
