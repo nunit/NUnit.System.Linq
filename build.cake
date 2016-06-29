@@ -74,12 +74,11 @@ Setup(context =>
         {
             var gitVersion = GitVersion(new GitVersionSettings
             {
-                UpdateAssemblyInfo = true,
                 LogFilePath = "console",
                 OutputType = GitVersionOutput.BuildServer
             });
 
-            packageVersion = gitVersion.NuGetVersion;
+            packageVersion = gitVersion.NuGetVersion ?? context.EnvironmentVariable("GitVersion_NuGetVersion");
         }
 
         // TODO: Figure out if and how we can update the build number on Travis. @asbjornu
