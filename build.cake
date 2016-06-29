@@ -20,10 +20,9 @@ var SOLUTION = PROJECT_DIR + "NUnit.System.Linq.sln";
 // SET PACKAGE VERSION
 //////////////////////////////////////////////////////////////////////
 
-var version = "0.6.0";
-var modifier = "";
+var version = "0.0.0";
 var dbgSuffix = configuration == "Debug" ? "-dbg" : "";
-var packageVersion = version + modifier + dbgSuffix;
+var packageVersion = version + dbgSuffix;
 
 //////////////////////////////////////////////////////////////////////
 // CLEAN
