@@ -50,42 +50,43 @@ Task("NuGet-Package-Restore")
 
 Setup(context =>
 {
-    GitVersion gitVersion;
-
-    if (!BuildSystem.IsLocalBuild)
+    if (BuildSystem.IsLocalBuild)
     {
-        // TODO: Figure out if and how we can update the build number on Travis. @asbjornu
-        if (BuildSystem.IsRunningOnAppVeyor)
-        {
-            var tag = AppVeyor.Environment.Repository.Tag;
-
-            if (tag.IsTag)
-            {
-                packageVersion = tag.Name;
-            }
-            else
-            {
-                gitVersion = GitVersion(new GitVersionSettings
-                {
-                    UpdateAssemblyInfo = true,
-                    LogFilePath = "console",
-                    OutputType = GitVersionOutput.BuildServer
-                });
-
-                packageVersion = gitVersion.NuGetVersion;
-            }
-
-            AppVeyor.UpdateBuildVersion(packageVersion);
-        }
-    }
-    else
-    {
-        gitVersion = GitVersion(new GitVersionSettings
+        var gitVersion = GitVersion(new GitVersionSettings
         {
             OutputType = GitVersionOutput.Json
         });
 
         packageVersion = gitVersion.NuGetVersion;
+    }
+    else
+    {
+        if (BuildSystem.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag)
+        {
+            packageVersion = AppVeyor.Environment.Repository.Tag.Name;
+        }
+        // TODO: Figure out if and how to retrieve the tag name on Travis. @asbjornu
+        /*else if (BuildSystem.IsRunningOnTravisCI && TravisCI.Environment.Repository.Tag.IsTag)
+        {
+            packageVersion = TravisCI.Environment.Repository.Tag.Name;
+        }*/
+        else
+        {
+            var gitVersion = GitVersion(new GitVersionSettings
+            {
+                UpdateAssemblyInfo = true,
+                LogFilePath = "console",
+                OutputType = GitVersionOutput.BuildServer
+            });
+
+            packageVersion = gitVersion.NuGetVersion;
+        }
+
+        // TODO: Figure out if and how we can update the build number on Travis. @asbjornu
+        if (BuildSystem.IsRunningOnAppVeyor)
+        {
+            AppVeyor.UpdateBuildVersion(packageVersion);
+        }
     }
 });
 
