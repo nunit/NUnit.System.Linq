@@ -3,7 +3,7 @@ configuration: Release
 platform: Any CPU
 
 build_script:
-  - ps: .\build.ps1 -Target "Appveyor"
+  - ps: .\build.ps1 -Target "Appveyor" -Verbosity Diagnostic
 
 # disable built-in tests.
 test: off
