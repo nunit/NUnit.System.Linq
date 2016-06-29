@@ -50,42 +50,24 @@ Task("NuGet-Package-Restore")
 
 Setup(context =>
 {
+    var settings = new GitVersionSettings();
+
     if (BuildSystem.IsLocalBuild)
     {
-        var gitVersion = GitVersion(new GitVersionSettings
-        {
-            OutputType = GitVersionOutput.Json
-        });
-
-        packageVersion = gitVersion.NuGetVersion;
+        settings.OutputType = GitVersionOutput.Json;
     }
     else
     {
-        if (BuildSystem.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag)
-        {
-            packageVersion = AppVeyor.Environment.Repository.Tag.Name;
-        }
-        // TODO: Figure out if and how to retrieve the tag name on Travis. @asbjornu
-        /*else if (BuildSystem.IsRunningOnTravisCI && TravisCI.Environment.Repository.Tag.IsTag)
-        {
-            packageVersion = TravisCI.Environment.Repository.Tag.Name;
-        }*/
-        else
-        {
-            var gitVersion = GitVersion(new GitVersionSettings
-            {
-                LogFilePath = "console",
-                OutputType = GitVersionOutput.BuildServer
-            });
+        settings.LogFilePath = "console";
+        settings.OutputType = GitVersionOutput.BuildServer;
+    }
 
-            packageVersion = gitVersion.NuGetVersion ?? context.EnvironmentVariable("GitVersion_NuGetVersion");
-        }
+    var gitVersion = GitVersion(settings);
+    packageVersion = gitVersion.NuGetVersion ?? context.EnvironmentVariable("GitVersion_NuGetVersion");
 
-        // TODO: Figure out if and how we can update the build number on Travis. @asbjornu
-        if (BuildSystem.IsRunningOnAppVeyor)
-        {
-            AppVeyor.UpdateBuildVersion(packageVersion);
-        }
+    if (string.IsNullOrWhiteSpace(packageVersion))
+    {
+        Warning("The package version is null or empty.");
     }
 });
 
