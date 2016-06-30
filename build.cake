@@ -1,4 +1,4 @@
-#tool "nuget:https://www.nuget.org/api/v2?package=GitVersion.CommandLine&version=3.5.4"
+#tool "nuget:?package=GitVersion.CommandLine&version=3.5.4"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
