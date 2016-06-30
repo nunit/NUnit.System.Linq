@@ -55,11 +55,11 @@ Setup(context =>
         OutputType = GitVersionOutput.Json
     };
 
-    if (!BuildSystem.IsLocalBuild)
+    /*if (!BuildSystem.IsLocalBuild)
     {
         settings.LogFilePath = "console";
         settings.OutputType = GitVersionOutput.BuildServer;
-    }
+    }*/
 
     var gitVersion = GitVersion(settings);
 
