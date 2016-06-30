@@ -52,7 +52,8 @@ Setup(context =>
 {
     var settings = new GitVersionSettings
     {
-        OutputType = GitVersionOutput.Json
+        OutputType = GitVersionOutput.Json,
+        LogFilePath = "console"
     };
 
     /*if (!BuildSystem.IsLocalBuild)
