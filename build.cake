@@ -50,45 +50,47 @@ Task("NuGet-Package-Restore")
 
 Setup(context =>
 {
-    var settings = new GitVersionSettings
+    if (IsRunningOnWindows())
     {
-        OutputType = GitVersionOutput.Json,
-        LogFilePath = "console"
-    };
+        var settings = new GitVersionSettings
+        {
+            OutputType = GitVersionOutput.Json,
+        };
 
-    /*if (!BuildSystem.IsLocalBuild)
-    {
-        settings.LogFilePath = "console";
-        settings.OutputType = GitVersionOutput.BuildServer;
-    }*/
+        /*if (!BuildSystem.IsLocalBuild)
+        {
+            settings.LogFilePath = "console";
+            settings.OutputType = GitVersionOutput.BuildServer;
+        }*/
 
-    var gitVersion = GitVersion(settings);
+        var gitVersion = GitVersion(settings);
 
-    Information("AssemblySemVer: " + gitVersion.AssemblySemVer);
-    Information("BranchName: " + gitVersion.BranchName);
-    Information("BuildMetaData: " + gitVersion.BuildMetaData);
-    Information("BuildMetaDataPadded: " + gitVersion.BuildMetaDataPadded);
-    Information("CommitDate: " + gitVersion.CommitDate);
-    Information("CommitsSinceVersionSource: " + gitVersion.CommitsSinceVersionSource);
-    Information("CommitsSinceVersionSourcePadded: " + gitVersion.CommitsSinceVersionSourcePadded);
-    Information("FullBuildMetaData: " + gitVersion.FullBuildMetaData);
-    Information("FullSemVer: " + gitVersion.FullSemVer);
-    Information("InformationalVersion: " + gitVersion.InformationalVersion);
-    Information("LegacySemVer: " + gitVersion.LegacySemVer);
-    Information("LegacySemVerPadded: " + gitVersion.LegacySemVerPadded);
-    Information("Major: " + gitVersion.Major);
-    Information("Minor: " + gitVersion.Minor);
-    Information("NuGetVersion: " + gitVersion.NuGetVersion);
-    Information("NuGetVersionV2: " + gitVersion.NuGetVersionV2);
-    Information("Patch: " + gitVersion.Patch);
-    Information("PreReleaseLabel: " + gitVersion.PreReleaseLabel);
-    Information("PreReleaseNumber: " + gitVersion.PreReleaseNumber);
-    Information("PreReleaseTag: " + gitVersion.PreReleaseTag);
-    Information("PreReleaseTagWithDash: " + gitVersion.PreReleaseTagWithDash);
-    Information("SemVer: " + gitVersion.SemVer);
-    Information("Sha: " + gitVersion.Sha);
+        Information("AssemblySemVer: " + gitVersion.AssemblySemVer);
+        Information("BranchName: " + gitVersion.BranchName);
+        Information("BuildMetaData: " + gitVersion.BuildMetaData);
+        Information("BuildMetaDataPadded: " + gitVersion.BuildMetaDataPadded);
+        Information("CommitDate: " + gitVersion.CommitDate);
+        Information("CommitsSinceVersionSource: " + gitVersion.CommitsSinceVersionSource);
+        Information("CommitsSinceVersionSourcePadded: " + gitVersion.CommitsSinceVersionSourcePadded);
+        Information("FullBuildMetaData: " + gitVersion.FullBuildMetaData);
+        Information("FullSemVer: " + gitVersion.FullSemVer);
+        Information("InformationalVersion: " + gitVersion.InformationalVersion);
+        Information("LegacySemVer: " + gitVersion.LegacySemVer);
+        Information("LegacySemVerPadded: " + gitVersion.LegacySemVerPadded);
+        Information("Major: " + gitVersion.Major);
+        Information("Minor: " + gitVersion.Minor);
+        Information("NuGetVersion: " + gitVersion.NuGetVersion);
+        Information("NuGetVersionV2: " + gitVersion.NuGetVersionV2);
+        Information("Patch: " + gitVersion.Patch);
+        Information("PreReleaseLabel: " + gitVersion.PreReleaseLabel);
+        Information("PreReleaseNumber: " + gitVersion.PreReleaseNumber);
+        Information("PreReleaseTag: " + gitVersion.PreReleaseTag);
+        Information("PreReleaseTagWithDash: " + gitVersion.PreReleaseTagWithDash);
+        Information("SemVer: " + gitVersion.SemVer);
+        Information("Sha: " + gitVersion.Sha);
 
-    packageVersion = gitVersion.NuGetVersion ?? context.EnvironmentVariable("GitVersion_NuGetVersion");
+        packageVersion = gitVersion.NuGetVersion ?? context.EnvironmentVariable("GitVersion_NuGetVersion");
+    }
 
     if (string.IsNullOrWhiteSpace(packageVersion))
     {
