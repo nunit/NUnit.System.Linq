@@ -1,3 +1,5 @@
+#tool "nuget:?package=GitVersion.CommandLine&version=3.5.4"
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -18,10 +20,9 @@ var SOLUTION = PROJECT_DIR + "NUnit.System.Linq.sln";
 // SET PACKAGE VERSION
 //////////////////////////////////////////////////////////////////////
 
-var version = "0.6.0";
-var modifier = "";
+var version = "0.0.0";
 var dbgSuffix = configuration == "Debug" ? "-dbg" : "";
-var packageVersion = version + modifier + dbgSuffix;
+var packageVersion = version + dbgSuffix;
 
 //////////////////////////////////////////////////////////////////////
 // CLEAN
@@ -37,39 +38,40 @@ Task("Clean")
 // RESTORE PACKAGES
 //////////////////////////////////////////////////////////////////////
 
-Task("InitializeBuild")
+Task("NuGet-Package-Restore")
     .Does(() =>
     {
-      if (BuildSystem.IsRunningOnAppVeyor)
-      {
-          var tag = AppVeyor.Environment.Repository.Tag;
-
-          if (tag.IsTag)
-          {
-              packageVersion = tag.Name;
-          }
-          else
-          {
-              var buildNumber = AppVeyor.Environment.Build.Number;
-              packageVersion = version + "-CI-" + buildNumber + dbgSuffix;
-              if (AppVeyor.Environment.PullRequest.IsPullRequest)
-                  packageVersion += "-PR-" + AppVeyor.Environment.PullRequest.Number;
-              else if (AppVeyor.Environment.Repository.Branch.StartsWith("release", StringComparison.OrdinalIgnoreCase))
-                  packageVersion += "-PRE-" + buildNumber;
-              else
-                  packageVersion += "-" + AppVeyor.Environment.Repository.Branch;
-          }
-
-          AppVeyor.UpdateBuildVersion(packageVersion);
-      }
+        NuGetRestore(SOLUTION);
     });
+
+//////////////////////////////////////////////////////////////////////
+// INITIALIZE BUILD
+//////////////////////////////////////////////////////////////////////
+
+Setup(context =>
+{
+    if (IsRunningOnWindows())
+    {
+        var gitVersion = GitVersion(new GitVersionSettings
+        {
+            OutputType = GitVersionOutput.Json,
+        });
+
+        packageVersion = gitVersion.NuGetVersion;
+    }
+
+    if (string.IsNullOrWhiteSpace(packageVersion))
+    {
+        Warning("The package version is null or empty.");
+    }
+});
 
 //////////////////////////////////////////////////////////////////////
 // BUILD
 //////////////////////////////////////////////////////////////////////
 
 Task("Build")
-    .IsDependentOn("InitializeBuild")
+    .IsDependentOn("NuGet-Package-Restore")
     .Does(() =>
     {
         if (IsRunningOnWindows())
@@ -88,7 +90,7 @@ Task("Build")
                 .WithTarget("Build")
                 .WithProperty("Configuration", configuration)
                 .SetVerbosity(Verbosity.Minimal));
-	    }
+        }
     });
 
 //////////////////////////////////////////////////////////////////////
@@ -125,7 +127,7 @@ Task("Travis")
     .IsDependentOn("Build");
 
 Task("Default")
-	.IsDependentOn("Build");
+    .IsDependentOn("Build");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
