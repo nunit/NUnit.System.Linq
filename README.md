@@ -1,12 +1,10 @@
 ## NUnit.System.Linq
+[![Build status](https://ci.appveyor.com/api/projects/status/6q8wgxgmnwv990ih/branch/master?svg=true)](https://ci.appveyor.com/project/CharliePoole/nunit-system-linq/branch/master)
+[![Travis build status](https://travis-ci.org/nunit/NUnit.System.Linq.svg?branch=master)](https://travis-ci.org/nunit/NUnit.System.Linq)
+
 Partial implementation of System.Linq for use with NUnit's .NET 2.0 framework builds and by the TestEngine.
 
 This assembly contains classes in the System.Linq namespace as well as other classes not present in .NET 2.0 but needed in order to support System.Linq. It will cause conflicts if referenced by an assembly that targets a runtime other than .NET 2.0.
-
-## Build Status
-
-Appveyor: [![Build status](https://ci.appveyor.com/api/projects/status/6q8wgxgmnwv990ih/branch/master?svg=true)](https://ci.appveyor.com/project/CharliePoole/nunit-system-linq/branch/master)
-Travis: [![Travis build status](https://travis-ci.org/nunit/NUnit.System.Linq.svg?branch=master)](https://travis-ci.org/nunit/NUnit.System.Linq)
 
 ## Types supported
 
