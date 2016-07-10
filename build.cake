@@ -57,7 +57,9 @@ Setup(context =>
             OutputType = GitVersionOutput.Json,
         });
 
-        packageVersion = gitVersion.NuGetVersion;
+        packageVersion = gitVersion.MajorMinorPatch;
+        if (gitVersion.PreReleaseLabel != "")
+            packageVersion += "-" + gitVersion.PreReleaseLabel + "-" + gitVersion.PreReleaseNumber;
     }
 
     if (string.IsNullOrWhiteSpace(packageVersion))
