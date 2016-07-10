@@ -57,10 +57,16 @@ Setup(context =>
             OutputType = GitVersionOutput.Json,
         });
 
+<<<<<<< HEAD
         packageVersion = gitVersion.NuGetVersion;
 
         Information("Assembly Version: " + gitVersion.AssemblySemVer);
         Information("Package Version: " + packageVersion);
+=======
+        packageVersion = gitVersion.MajorMinorPatch;
+        if (gitVersion.PreReleaseLabel != "")
+            packageVersion += "-" + gitVersion.PreReleaseLabel + "-" + gitVersion.PreReleaseNumber;
+>>>>>>> feature/TestFeature1
     }
 
     if (string.IsNullOrWhiteSpace(packageVersion))
