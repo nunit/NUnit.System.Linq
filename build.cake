@@ -60,6 +60,8 @@ Setup(context =>
         packageVersion = gitVersion.MajorMinorPatch;
         if (gitVersion.PreReleaseLabel != "")
             packageVersion += "-" + gitVersion.PreReleaseLabel + "-" + gitVersion.PreReleaseNumber;
+
+        Information("Using AssemblyVersion " + gitVersion.AssemblySemVer);
     }
 
     if (string.IsNullOrWhiteSpace(packageVersion))
