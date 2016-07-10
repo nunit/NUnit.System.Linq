@@ -58,6 +58,9 @@ Setup(context =>
         });
 
         packageVersion = gitVersion.NuGetVersion;
+
+        Information("Assembly Version: " + gitVersion.AssemblySemVer);
+        Information("Package Version: " + packageVersion);
     }
 
     if (string.IsNullOrWhiteSpace(packageVersion))
